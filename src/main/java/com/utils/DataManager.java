@@ -1,6 +1,8 @@
 package com.utils;
 
 import org.apache.commons.lang3.RandomStringUtils;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -30,6 +32,30 @@ public class DataManager {
      */
     public static int getRandomNumber(int range) {
         return new Random().nextInt(range);
+    }
+
+    /**
+     * Generates random number in String format with given length
+     *
+     * @param length The length of generated String
+     * @return Random number
+     */
+    public static String getRandNumber(int length) {
+        return RandomStringUtils.randomNumeric(length);
+    }
+
+    /**
+     * Generates random password with given length
+     *
+     * @param length The length of generated password
+     * @return Random number
+     */
+    public static String generatePassword(int length) {
+        return String.format("%1$s%2$s%3$s%4$s",
+                getRandomString(length / 2 - 1),
+                getRandomNumber(length / 2 - 1),
+                getRandomString(1).toUpperCase(),
+                RandomStringUtils.random(1, 33, 47, false, false));
     }
 
     /**
@@ -77,5 +103,28 @@ public class DataManager {
         List<T> copy = new LinkedList<>(lst);
         Collections.shuffle(copy);
         return copy.subList(0, n);
+    }
+
+    /**
+     * Gets random element from the given list
+     *
+     * @param elements The list to get random element
+     * @param <T>      The type of elements in the list
+     * @return Random element
+     */
+    public static <T> T getRandomFromList(List<T> elements) {
+        return elements.get(new Random().nextInt(elements.size()));
+    }
+
+    /**
+     * Parses 'String' value from the List<String> to 'double' value and puts it to the List<double>
+     *
+     * @param listString List<String> to parse
+     * @return List<Double>
+     */
+    public static List<Double> convertListStringToDouble(List<String> listString) {
+        List<Double> listDouble = new ArrayList<>();
+        listString.forEach(str -> listDouble.add(Double.parseDouble(str)));
+        return listDouble;
     }
 }

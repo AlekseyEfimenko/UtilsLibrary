@@ -20,6 +20,7 @@ import java.util.Map;
 public class ApiManager {
     private static final String BASE_PATH = FileManager.getInstance().getProperties("ApiUrl");
     private static final String CONTENT_TYPE = "Content-Type";
+    private static final String AUTHORISATION = "Authorization";
     private static ApiManager instance;
     private final RequestSpecification specification = new RequestSpecBuilder()
             .setBaseUri(BASE_PATH)
@@ -47,7 +48,10 @@ public class ApiManager {
      * @param target URL of request
      */
     public void getRequest(String target) {
-        response = RestAssured.when().get(target);
+        response = RestAssured
+                .given()
+                .spec(specification)
+                .get(target);
     }
 
     /**
@@ -84,6 +88,22 @@ public class ApiManager {
      */
     public <T> void postRequest(String target, T obj) {
         response = RestAssured.given().header(CONTENT_TYPE, ContentType.JSON).body(obj).post(BASE_PATH + target);
+    }
+
+    /**
+     * Send data to the API server to create new resource
+     *
+     * @param target URL to post request
+     * @param obj    T object to be sent
+     * @param header The value of header in the request
+     * @param <T>    The type of object
+     */
+    public <T> void postRequest(String target, T obj, String header) {
+        response = RestAssured.given()
+                .header(CONTENT_TYPE, ContentType.JSON)
+                .header(AUTHORISATION, header)
+                .body(obj)
+                .post(BASE_PATH + target);
     }
 
     /**

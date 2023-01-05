@@ -210,6 +210,16 @@ public class DataBaseManager {
     }
 
     /**
+     * Select top n rows from query
+     * @param columnName The column to get data
+     * @param table The table to get data
+     * @param numRows number of top rows to select
+     */
+    public void selectTopRows(String columnName, String table, int numRows) {
+        selectQuery(columnName, String.format("%1$s LIMIT %2$s", table, numRows));
+    }
+
+    /**
      * Set connection to database
      */
     private static void setConnection() {
